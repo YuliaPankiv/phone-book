@@ -25,9 +25,8 @@ export const handlePending = state => {
   state.contacts.isLoading = true;
   state.contacts.error = null;
 };
-export const handleFulfilled = (state, { payload }) => {
+export const handleFulfilled = (state) => {
   state.contacts.isLoading = false;
-  state.contacts.error = payload;
 };
 export const handleRejected = (state, { payload }) => {
   state.contacts.isLoading = false;

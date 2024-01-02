@@ -17,8 +17,15 @@ const contactSlice = createSlice({
       items: [],
       isLoading: false,
       error: null,
+      filter:''
+    },
+  },  reducers: {
+    filterValue: (state, { payload }) => {
+      console.log(state);
+      state.filter = payload;
     },
   },
+
   extraReducers: builder => {
     builder
       .addCase(fetchContacts.fulfilled, handleFetchContactsFulfilled)
@@ -31,3 +38,4 @@ const contactSlice = createSlice({
 });
 
 export const contactReducer = contactSlice.reducer;
+export const {filterValue} = contactSlice.actions;
