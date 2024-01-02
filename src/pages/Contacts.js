@@ -19,7 +19,7 @@ export default function Tasks() {
   return (
     <>
       <Helmet>
-        <title>Your tasks</title>
+        <title>Your contacts</title>
       </Helmet>
       <Container>
         <h1>Phone book</h1>

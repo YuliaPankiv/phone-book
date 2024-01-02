@@ -1,61 +1,46 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Button, Form, Label } from './ContactForm.styled';
-import { nanoid } from '@reduxjs/toolkit';
-import { selectContacts } from '../../redux/contact/selectors';
+import { selectContacts, selectLoading } from '../../redux/contact/selectors';
 import { addContact } from '../../redux/contact/options';
 
 export const ContactForm = () => {
-  const [name, setName] = useState('');
-  const [number, setNumber] = useState('');
+  const [form, setForm] = useState({ name: '', number: '' });
   const dispatch = useDispatch();
   const contacts = useSelector(selectContacts);
-
+  const isLoading = useSelector(selectLoading);
   const handleChange = e => {
-    switch (e.target.name) {
-      case 'name':
-        setName(e.target.value);
-        break;
-      case 'number':
-        setNumber(e.target.value);
-        break;
-      default:
-        break;
-    }
+    const { name, value } = e.target;
+    setForm(prevForm => {
+      return { ...prevForm, [name]: value };
+    });
   };
-
-  const handleOnSubmit = e => {
+  const handleSubmit = e => {
     e.preventDefault();
-    const newContact = {
-      id: nanoid(3),
-      name,
-      number,
-    };
-    if (checkContactNameRepeat(name)) {
-      alert(`${name} already exists`);
-    } else {
-      dispatch(addContact(newContact));
+    const newContact = { ...form };
+    const isAvailable =
+      contacts.length > 0 &&
+      contacts.find(contact => contact.name === form.name);
+    if (isAvailable) {
+      return alert(`${form.name} is already in contacts list`);
     }
-    setName('');
-    setNumber('');
-  };
-
-  const checkContactNameRepeat = name => {
-    const temporaryNameArray = contacts.map(item => item.name.toLowerCase());
-    return temporaryNameArray.includes(name.toLowerCase());
+    dispatch(addContact({ ...newContact }));
+    setForm({ name: '', number: '' });
   };
   return (
-    <Form onSubmit={handleOnSubmit}>
+    <Form onSubmit={handleSubmit}>
       <Label>
         Name
         <input
           type="text"
           name="name"
-          value={name}
-          pattern="^[a-zA-Zа-яА-Я]+(([' \-][a-zA-Zа-яА-Я ])?[a-zA-Zа-яА-Я]*)*$"
+          value={form.name}
+          // pattern="^[a-zA-Zа-яА-Я]+(([' -][a-zA-Zа-яА-Я ])?[a-zA-Zа-яА-Я]*)*$"
           title="Name may contain only letters, apostrophe, dash and spaces. For example Adrian, Jacob Mercer, Charles de Batz de Castelmore d'Artagnan"
           required
-          onChange={handleChange}
+          onChange={e => {
+            handleChange(e);
+          }}
         />
       </Label>
       <Label>
@@ -63,14 +48,16 @@ export const ContactForm = () => {
         <input
           type="tel"
           name="number"
-          value={number}
-          pattern="\+?\d{1,4}?[ .\-\s]?\(?\d{1,3}?\)?[ .\-\s]?\d{1,4}[ .\-\s]?\d{1,4}[ .\-\s]?\d{1,9}"
+          value={form.number}
+          // pattern="\+?\d{1,4}?[-.\s]?\(?\d{1,3}?\)?[-.\s]?\d{1,4}[-.\s]?\d{1,4}[-.\s]?\d{1,9}"
           title="Phone number must be digits and can contain spaces, dashes, parentheses and can start with +"
           required
-          onChange={handleChange}
+          onChange={e => {
+            handleChange(e);
+          }}
         />
       </Label>
-      <Button type="submit">Add contact</Button>
+      <Button type="submit">{isLoading ? 'Loading...' : 'Add contact'}</Button>
     </Form>
   );
 };
