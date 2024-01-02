@@ -1,5 +1,4 @@
 import { createSlice, isAnyOf } from '@reduxjs/toolkit';
-import { addContact, deleteContact, fetchContacts } from './options';
 import {
   handleAddContactFulfilled,
   handleDeleteContactsFulfilled,
@@ -8,7 +7,8 @@ import {
   handlePending,
   handleRejected,
   typeAction,
-} from 'components/service/functionsSlice';
+} from '../../components/service/functionsSlice';
+import { addContact, deleteContact, fetchContacts } from './options';
 
 const contactSlice = createSlice({
   name: 'contacts',

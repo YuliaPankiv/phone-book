@@ -1,7 +1,7 @@
 import { SlUserUnfollow } from 'react-icons/sl';
 import { Delete } from 'components/contactList/ContactList.styled';
 import { useDispatch } from 'react-redux';
-import { deleteContact } from '../../redux/options';
+import { deleteContact } from '../../redux/contact/options';
 import { TodoWrapper } from './Item.styled';
 // import { deleteContact, editContact } from '../../redux/options';
 // import { DeleteButton, EditButton, TodoWrapper } from './Item.styled';

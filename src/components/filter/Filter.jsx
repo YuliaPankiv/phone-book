@@ -1,6 +1,6 @@
 import { useDispatch } from 'react-redux';
 import { TextField } from '@mui/material';
-import { filterValue } from '../../redux/filterSlice';
+import { filterValue } from '../../redux/contact/filterSlice';
 
 const Filter = () => {
   const dispatch = useDispatch();
