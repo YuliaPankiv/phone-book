@@ -18,14 +18,19 @@ export const ContactForm = () => {
   const handleSubmit = e => {
     e.preventDefault();
     const newContact = { ...form };
-    const isAvailable =
-      contacts.length > 0 &&
-      contacts.find(contact => contact.name === form.name);
-    if (isAvailable) {
-      return alert(`${form.name} is already in contacts list`);
+
+    if (checkContactNameRepeat(form.name)) {
+      alert(`${form.name} already exists`);
+      return;
+    } else {
+      dispatch(addContact(newContact));
     }
-    dispatch(addContact({ ...newContact }));
     setForm({ name: '', number: '' });
+  };
+
+  const checkContactNameRepeat = name => {
+    const temporaryNameArray = contacts.map(item => item.name.toLowerCase());
+    return temporaryNameArray.includes(name.toLowerCase());
   };
   return (
     <Form onSubmit={handleSubmit}>
@@ -35,12 +40,10 @@ export const ContactForm = () => {
           type="text"
           name="name"
           value={form.name}
-          // pattern="^[a-zA-Zа-яА-Я]+(([' -][a-zA-Zа-яА-Я ])?[a-zA-Zа-яА-Я]*)*$"
+          pattern="^[a-zA-Zа-яА-Я]+(([' \-][a-zA-Zа-яА-Я ])?[a-zA-Zа-яА-Я]*)*$"
           title="Name may contain only letters, apostrophe, dash and spaces. For example Adrian, Jacob Mercer, Charles de Batz de Castelmore d'Artagnan"
           required
-          onChange={e => {
-            handleChange(e);
-          }}
+          onChange={handleChange}
         />
       </Label>
       <Label>
@@ -49,12 +52,10 @@ export const ContactForm = () => {
           type="tel"
           name="number"
           value={form.number}
-          // pattern="\+?\d{1,4}?[-.\s]?\(?\d{1,3}?\)?[-.\s]?\d{1,4}[-.\s]?\d{1,4}[-.\s]?\d{1,9}"
+          pattern="\+?\d{1,4}?[ .\-\s]?\(?\d{1,3}?\)?[ .\-\s]?\d{1,4}[ .\-\s]?\d{1,4}[ .\-\s]?\d{1,9}"
           title="Phone number must be digits and can contain spaces, dashes, parentheses and can start with +"
           required
-          onChange={e => {
-            handleChange(e);
-          }}
+          onChange={handleChange}
         />
       </Label>
       <Button type="submit">{isLoading ? 'Loading...' : 'Add contact'}</Button>
