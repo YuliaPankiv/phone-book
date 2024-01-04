@@ -7,8 +7,8 @@ import {
   handlePending,
   handleRejected,
   typeAction,
-} from '../../components/service/functionsSlice';
-import { addContact, deleteContact, fetchContacts } from './options';
+} from '../../components/service/sliceFunctions/contactFuncSlice';
+import { addContact, deleteContact, fetchContacts } from './operations';
 
 const contactSlice = createSlice({
   name: 'contacts',
@@ -17,9 +17,10 @@ const contactSlice = createSlice({
       items: [],
       isLoading: false,
       error: null,
-      filter:''
+      filter: '',
     },
-  },  reducers: {
+  },
+  reducers: {
     filterValue: (state, { payload }) => {
       console.log(state);
       state.filter = payload;
@@ -38,4 +39,4 @@ const contactSlice = createSlice({
 });
 
 export const contactReducer = contactSlice.reducer;
-export const {filterValue} = contactSlice.actions;
+export const { filterValue } = contactSlice.actions;

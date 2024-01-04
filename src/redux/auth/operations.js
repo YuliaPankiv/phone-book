@@ -1,6 +1,11 @@
 import axios from 'axios';
 import { createAsyncThunk } from '@reduxjs/toolkit';
-import { logInsApi, logOutApi, refreshUserApi, registerApi } from 'components/service/apiAuth';
+import {
+  logInsApi,
+  logOutApi,
+  refreshUserApi,
+  registerApi,
+} from 'components/service/api/apiAuth';
 
 axios.defaults.baseURL = 'https://connections-api.herokuapp.com';
 
@@ -22,8 +27,7 @@ export const register = createAsyncThunk(
   'auth/register',
   async (credentials, thunkAPI) => {
     try {
-      const {data} = await registerApi(credentials);
-      console.log(data);
+      const { data } = await registerApi(credentials);
       // After successful registration, add the token to the HTTP header
       setAuthHeader(data.token);
       return data;
@@ -40,9 +44,9 @@ export const register = createAsyncThunk(
 export const logIn = createAsyncThunk(
   'auth/login',
   async (credentials, thunkAPI) => {
-    debugger
+    debugger;
     try {
-      const {data}  = await logInsApi(credentials);
+      const { data } = await logInsApi(credentials);
       // After successful login, add the token to the HTTP header
       setAuthHeader(data.token);
       return data;
@@ -76,7 +80,6 @@ export const refreshUser = createAsyncThunk(
     // Reading the token from the state via getState()
     const state = thunkAPI.getState();
     const persistedToken = state.auth.token;
-
     if (persistedToken === null) {
       // If there is no token, exit without performing any request
       return thunkAPI.rejectWithValue('Unable to fetch user');
@@ -85,8 +88,8 @@ export const refreshUser = createAsyncThunk(
     try {
       // If there is a token, add it to the HTTP header and perform the request
       setAuthHeader(persistedToken);
-      const res = await refreshUserApi();
-      return res.data;
+      const { data } = await refreshUserApi();
+      return data;
     } catch (error) {
       return thunkAPI.rejectWithValue(error.message);
     }

@@ -6,9 +6,10 @@ export const handleAuthFulfilled = (state, { payload }) => {
   state.token = payload.token;
   state.isLoggedIn = true;
 };
-export const handleLogOutFulfilled = (state, { payload }) => {
-  state.user = payload;
-  state.isLoggedIn = true;
+export const handleLogOutFulfilled = state => {
+  state.user = {};
+  state.isLoggedIn = false;
+  state.token = null;
   state.isRefreshing = false;
 };
 

@@ -2,7 +2,7 @@ import {
   addContact,
   deleteContact,
   fetchContacts,
-} from '../../redux/contact/options';
+} from '../../../redux/contact/operations';
 
 export const arrThunk = [addContact, deleteContact, fetchContacts];
 
